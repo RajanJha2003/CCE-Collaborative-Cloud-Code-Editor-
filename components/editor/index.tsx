@@ -49,6 +49,16 @@ const CodeEditor = () => {
               defaultLanguage="typescript"
               theme="vs-dark"
               onMount={handleEditorMount}
+              options={{
+                minimap:{
+                  enabled:false
+                },
+                padding:{
+                  bottom:4,
+                  top:4
+                },
+                scrollBeyondLastLine:false,
+              }}
             />
           </div>
         </ResizablePanel>
