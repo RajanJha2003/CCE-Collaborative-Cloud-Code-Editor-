@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import CustomButton from "../ui/customButton";
-import { Code2, FolderDot, HelpCircle, Plus, Settings, Users } from "lucide-react";
+import { Clock, Code2, FolderDot, Globe, HelpCircle, Plus, Settings, Users } from "lucide-react";
 import { Button } from "../ui/button";
+import ProjectCard from "./projectCard";
 
 type TScreen = "projects" | "shared" | "settings" | "search";
 
@@ -68,11 +69,21 @@ const Dashboard = () => {
             </Button>
         </div>
       </div>
-      <div className="grow flex flex-col items-start p-4">
-        <h1 className="text-2xl font-medium text-center">
-        A Collaborative Cloud Code Editor, AI Powered, Auto-Scaling Copilot
+      <div className="grow grid lg:grid-cols-4 xl:grid-cols-5 space-y-0.5 p-4">
+        <ProjectCard >
+            <div className="font-medium flex items-center whitespace-nowrap w-full text-ellipsis overflow-hidden">React Project</div>
+            <div className="flex flex-col text-muted-foreground space-y-0.5 text-sm">
+                <div className="flex items-center">
+                    <Globe className="w-3 h-3 mr-2" /> Public
+                </div>
+                <div className="flex items-center">
+                    <Clock className="w-3 h-3 mr-2" /> 3d ago
 
-        </h1>
+                </div>
+            </div>
+        </ProjectCard>
+
+        
       </div>
     </div>
   );
