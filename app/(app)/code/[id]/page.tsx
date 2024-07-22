@@ -13,7 +13,7 @@ export default function Home() {
         <Navbar />
       
       <div className="w-screen flex grow">
-        {clerk.loaded ? <CodeEditor />:null}
+      {clerk.loaded ? <CodeEditor />:null}
 
         
       </div>
