@@ -106,3 +106,9 @@ compatibility_flags = ["nodejs_compat"]
 # [[vectorize]]
 # binding = "MY_INDEX"
 # index_name = "my-index"
+
+
+[[d1_databases]]
+binding="DB"
+database_name = "d1-virtualbox"
+database_id="ffc3fa14-34b8-41e4-93a5-c4a31481a54b"
