@@ -13,6 +13,14 @@ export const user = sqliteTable('user', {
 	generations: integer('generations').default(0),
 });
 
+
+export type User=typeof user.$inferSelect;
+
+
+export const userRelations=relations(user,({many})=>({
+	virtualbox:many(virtualbox)
+}))
+
 export const virtualbox = sqliteTable('virtualbox', {
 	id: text('id')
 		.$defaultFn(() => createId())
@@ -25,3 +33,6 @@ export const virtualbox = sqliteTable('virtualbox', {
       .notNull()
       .references(()=>user.id)
 });
+
+
+export type Virtualbox = typeof virtualbox.$inferSelect;
