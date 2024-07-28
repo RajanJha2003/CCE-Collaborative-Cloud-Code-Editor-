@@ -1,0 +1,1 @@
+ALTER TABLE `virtualbox` RENAME COLUMN `visibility` TO `bucket`;
