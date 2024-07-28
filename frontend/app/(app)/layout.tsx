@@ -10,18 +10,33 @@ const AppAuthLayout = async({children}:{children:React.ReactNode}) => {
     }
 
     const dbUser=await fetch(
-        `https://database.rajanj448.workers.dev/api/user?id=124`
+        `https://database.rajanj448.workers.dev/api/user?id=${user.id}`
     )
 
-    const res=await dbUser.json();
+    const dbUserJson=await dbUser.json();
+    if(!dbUserJson.id){
+        const res=await fetch("https://database.rajanj448.workers.dev/api/user",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+            },
+            body:JSON.stringify({
+                id:user.id,
+                name:user.firstName + " " + user.lastName,
+                email:user.emailAddresses[0].emailAddress
+            })
+        })
+    }else{
 
-    console.log(dbUser);
+    }
+
+    // console.log(dbUser);
 
 
 
   return (
     <>
-    <h1>{res.name}</h1>
+    <h1>{dbUserJson.name}</h1>
     
     {children}</>
   )
