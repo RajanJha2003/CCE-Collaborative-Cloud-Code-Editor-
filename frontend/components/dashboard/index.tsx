@@ -17,6 +17,7 @@ import ProjectCard from "./projectCard";
 import { Virtualbox } from "@/lib/types";
 import Image from "next/image";
 import ProjectCardDropdown from "./projectCard/dropdown";
+import DashboardSharedWithMe from "./shared";
 
 type TScreen = "projects" | "shared" | "settings" | "search";
 
@@ -101,7 +102,7 @@ const Dashboard = ({ virtualboxes }: { virtualboxes: Virtualbox[] }) => {
             </ProjectCard>
           ))}
         </div>
-      ) : screen=="shared"?null:screen=="settings"?null:null}
+      ) : screen=="shared"?<DashboardSharedWithMe virtualboxes={virtualboxes} />:screen=="settings"?null:null}
     </div>
   );
 };
