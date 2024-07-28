@@ -11,14 +11,40 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+import { eq } from 'drizzle-orm';
+import { user } from './schema';
+import { json } from 'itty-router-extras';
+import { drizzle } from 'drizzle-orm/d1';
+import * as schema from './schema';
+
 export interface Env {
 	DB: D1Database;
 	STORAGE: any;
 }
 
-
 export default {
-	async fetch(request, env, ctx): Promise<Response> {
-		return new Response('Hello World!');
+	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+		const url = new URL(request.url);
+		const path = url.pathname;
+		const method = request.method;
+		const db = drizzle(env.DB,{schema})
+
+		if (path == '/api/user' && method == 'GET') {
+			const params = url.searchParams;
+			if (params.has('id')) {
+				const id = params.get('id') as string;
+				const res = await db.select().from(user).where(eq(user.id, id)).get();
+				return json(res ?? {});
+			}else{
+				const res=await db.select().from(user).all();
+				return new Response(JSON.stringify(res));
+			}
+
+			
+		}
+		else{
+			 return new Response('Not Found', { status: 404 });
+				
+		}
 	},
-} satisfies ExportedHandler<Env>;
+};
