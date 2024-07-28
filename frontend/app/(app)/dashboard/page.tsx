@@ -1,6 +1,6 @@
 import Dashboard from '@/components/dashboard';
 import Navbar from '@/components/navbar'
-import { Virtualbox } from '@/lib/types';
+import { User, Virtualbox } from '@/lib/types';
 import { currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation';
 import React from 'react'
@@ -12,15 +12,17 @@ const page = async() => {
         redirect("/");
     }
 
-    const res=await fetch(`https://database.rajanj448.workers.dev/api/user/virtualbox?id=${user.id}`);
+    const userRes = await fetch(
+      `https://database.rajanj448.workers.dev/api/user?id=${user.id}`
+    );
 
-    const data=(await res.json()).virtualbox as Virtualbox[];
+    const userData=(await userRes.json()) as User;
 
 
   return (
     <div>
-        <Navbar />
-        <Dashboard virtualboxes={data}  />
+        <Navbar userData={userData} />
+        <Dashboard virtualboxes={userData.virtualbox}  />
     </div>
   )
 }

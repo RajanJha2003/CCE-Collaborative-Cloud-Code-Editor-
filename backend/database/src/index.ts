@@ -17,13 +17,19 @@ export default {
 		const method = request.method;
 		const db = drizzle(env.DB, { schema });
 
-		if (path.startsWith('/api/user')) {
+		
 			if (path === '/api/user') {
 				if (method === 'GET') {
 					const params = url.searchParams;
 					if (params.has('id')) {
 						const id = params.get('id') as string;
-						const res = await db.select().from(user).where(eq(user.id, id)).get();
+						const res = await db.query.user.findFirst({
+							where: (user, { eq }) => eq(user.id, id),
+							with: {
+								virtualbox: true
+							}
+						});
+
 						return json(res ?? {});
 					} else {
 						const res = await db.select().from(user).all();
@@ -46,30 +52,9 @@ export default {
 				} else {
 					return new Response('Method Not Found', { status: 405 });
 				}
-			} else if (path === '/api/user/virtualbox') {
-				if (method === 'GET') {
-					const params = url.searchParams;
-					if (params.has('id')) {
-						const id = params.get('id') as string;
-						const res = await db.query.user.findFirst({
-							where: (user, { eq }) => eq(user.id, id),
-							with: {
-								virtualbox: true
-							}
-						});
-
-						return json(res ?? {});
-					} else {
-						return new Response('ID not provided', { status: 400 });
-					}
-				} else {
-					return new Response('Method Not Found', { status: 405 });
-				}
 			} else {
 				return new Response('Not Found', { status: 404 });
 			}
-		} else {
-			return new Response('Not Found', { status: 404 });
-		}
-	},
+		} 
+	
 };
