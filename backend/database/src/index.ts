@@ -46,7 +46,7 @@ export default {
 				} else {
 					return new Response('Method Not Found', { status: 405 });
 				}
-			} else if (path === '/api/virtualbox') {
+			} else if (path === '/api/user/virtualbox') {
 				if (method === 'GET') {
 					const params = url.searchParams;
 					if (params.has('id')) {

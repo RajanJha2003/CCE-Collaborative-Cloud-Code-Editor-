@@ -5,11 +5,12 @@ import CustomButton from "../ui/customButton";
 import { Clock, Code2, FolderDot, Globe, HelpCircle, Plus, Settings, Users } from "lucide-react";
 import { Button } from "../ui/button";
 import ProjectCard from "./projectCard";
+import { Virtualbox } from "@/lib/types";
 
 type TScreen = "projects" | "shared" | "settings" | "search";
 
 
-const Dashboard = () => {
+const Dashboard = ({virtualboxes}:{virtualboxes:Virtualbox[]}) => {
 
     const [screen,setScreen]=useState<TScreen>("projects");
 
@@ -70,8 +71,10 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="grow grid lg:grid-cols-4 xl:grid-cols-5 space-y-0.5 p-4">
-        <ProjectCard >
-            <div className="font-medium flex items-center whitespace-nowrap w-full text-ellipsis overflow-hidden">React Project</div>
+        {
+          virtualboxes.map((virtualbox)=>(
+            <ProjectCard key={virtualbox.id} >
+            <div className="font-medium flex items-center whitespace-nowrap w-full text-ellipsis overflow-hidden">{virtualbox.name}</div>
             <div className="flex flex-col text-muted-foreground space-y-0.5 text-sm">
                 <div className="flex items-center">
                     <Globe className="w-3 h-3 mr-2" /> Public
@@ -82,6 +85,10 @@ const Dashboard = () => {
                 </div>
             </div>
         </ProjectCard>
+
+          ))
+        }
+        
 
         
       </div>

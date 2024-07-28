@@ -36,7 +36,7 @@ const AppAuthLayout = async({children}:{children:React.ReactNode}) => {
 
   return (
     <>
-    <h1>{dbUserJson.name}</h1>
+ 
     
     {children}</>
   )
