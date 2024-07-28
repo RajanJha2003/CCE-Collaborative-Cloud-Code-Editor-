@@ -16,6 +16,7 @@ import { user } from './schema';
 import { json } from 'itty-router-extras';
 import { drizzle } from 'drizzle-orm/d1';
 import * as schema from './schema';
+import { z } from 'zod';
 
 export interface Env {
 	DB: D1Database;
@@ -27,24 +28,34 @@ export default {
 		const url = new URL(request.url);
 		const path = url.pathname;
 		const method = request.method;
-		const db = drizzle(env.DB,{schema})
+		const db = drizzle(env.DB, { schema });
 
-		if (path == '/api/user' && method == 'GET') {
-			const params = url.searchParams;
-			if (params.has('id')) {
-				const id = params.get('id') as string;
-				const res = await db.select().from(user).where(eq(user.id, id)).get();
-				return json(res ?? {});
-			}else{
-				const res=await db.select().from(user).all();
-				return new Response(JSON.stringify(res));
-			}
+		if (path == '/api/user') {
+			if (method == 'GET') {
+				const params = url.searchParams;
+				if (params.has('id')) {
+					const id = params.get('id') as string;
+					const res = await db.select().from(user).where(eq(user.id, id)).get();
+					return json(res ?? {});
+				} else {
+					const res = await db.select().from(user).all();
+					return new Response(JSON.stringify(res));
+				}
+			} else if (method == 'POST') {
+				const userSchema = z.object({
+					id: z.string(),
+					name: z.string(),
+					email: z.string().email(),
+				});
 
-			
-		}
-		else{
-			 return new Response('Not Found', { status: 404 });
-				
-		}
+				const body = await request.json();
+
+				const { id, name, email } = userSchema.parse(body);
+
+				const res = await db.insert(user).values({ id, name, email }).returning().get();
+
+				return json({ res });
+			} else return new Response('Method Not Found', { status: 405 });
+		} else return new Response('Not Found', { status: 404 });
 	},
 };
