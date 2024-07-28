@@ -18,6 +18,7 @@ import { Virtualbox } from "@/lib/types";
 import Image from "next/image";
 import ProjectCardDropdown from "./projectCard/dropdown";
 import DashboardSharedWithMe from "./shared";
+import DashboardProjects from "./projects";
 
 type TScreen = "projects" | "shared" | "settings" | "search";
 
@@ -80,28 +81,7 @@ const Dashboard = ({ virtualboxes }: { virtualboxes: Virtualbox[] }) => {
         </div>
       </div>
       {screen === "projects" ? (
-        <div className="grow grid lg:grid-cols-4 xl:grid-cols-5 space-y-0.5 p-4">
-          {virtualboxes.map((virtualbox) => (
-            <ProjectCard key={virtualbox.id}>
-              <div className="flex space-x-2 items-center justify-start w-full" >
-                <Image src={virtualbox.type=="react"?"/project-icons/react.svg":"/project-icons/node.svg"} width={20} height={20} alt="" />
-                <div className="font-medium flex items-center whitespace-nowrap w-full text-ellipsis overflow-hidden">
-                {virtualbox.name}
-              </div>
-              <ProjectCardDropdown virtualbox={virtualbox} />
-              </div>
-              
-              <div className="flex flex-col text-muted-foreground space-y-0.5 text-sm">
-                <div className="flex items-center">
-                  <Globe className="w-3 h-3 mr-2" /> Public
-                </div>
-                <div className="flex items-center">
-                  <Clock className="w-3 h-3 mr-2" /> 3d ago
-                </div>
-              </div>
-            </ProjectCard>
-          ))}
-        </div>
+       <DashboardProjects virtualboxes={virtualboxes} />
       ) : screen=="shared"?<DashboardSharedWithMe virtualboxes={virtualboxes} />:screen=="settings"?null:null}
     </div>
   );

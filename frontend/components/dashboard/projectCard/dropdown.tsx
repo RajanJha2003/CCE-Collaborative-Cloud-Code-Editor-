@@ -8,7 +8,10 @@ import React from 'react'
 const ProjectCardDropdown = ({virtualbox}:{virtualbox:Virtualbox}) => {
   return (
     <DropdownMenu>
-        <DropdownMenuTrigger className="
+        <DropdownMenuTrigger onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }} className="
       h-6 w-6 flex items-center justify-center transition-colors bg-transparent hover:bg-muted-foreground/25 rounded-sm">
             <Ellipsis className='w-4 h-4' />
         </DropdownMenuTrigger>
